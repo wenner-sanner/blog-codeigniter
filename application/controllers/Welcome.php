@@ -20,6 +20,12 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+	    $data['mensagem'] = 'Olá mundo';
+		$this->load->view('ola_mundo', $data);
 	}
+
+	public function teste( $parametro1, $parametro2 ) {
+	    print 'Parametro1 ==> ' . $parametro1 . '<br>';
+	    print 'Parametro2 ==> ' . $parametro2 . '<br>' ;
+    }
 }
