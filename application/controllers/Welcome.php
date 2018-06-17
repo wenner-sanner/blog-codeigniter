@@ -18,14 +18,17 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
-	    $data['mensagem'] = 'Olá mundo';
-		$this->load->view('ola_mundo', $data);
-	}
 
-	public function teste( $parametro1, $parametro2 ) {
-	    print 'Parametro1 ==> ' . $parametro1 . '<br>';
-	    print 'Parametro2 ==> ' . $parametro2 . '<br>' ;
+
+	public function index() {
+	    $data['postagens'] = $this->db->get('postagens')->result();
+	    $this->load->view('postagens', $data);
+    }
+
+    public function detalhes( $id ) {
+	    $this->db->where('id', $id);
+	    $data['postagem'] = $this->db->get('postagens')->result();
+	    $data['postagens'] = $this->db->get('postagens')->result();
+	    $this->load->view('detalhes_postagem', $data);
     }
 }
