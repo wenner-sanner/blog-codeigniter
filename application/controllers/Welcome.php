@@ -85,4 +85,9 @@ class Welcome extends CI_Controller {
         }
 
     }
+
+    public function error404() {
+        $this->load->view('error404');
+    }
 }
+
