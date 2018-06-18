@@ -21,49 +21,68 @@ class Welcome extends CI_Controller {
 
 
 	public function index() {
+
 	    $data['postagens'] = $this->db->get('postagens')->result();
 	    $this->load->view('postagens', $data);
-    }
+
+	}
 
     public function detalhes( $id ) {
+
 	    $this->db->where('id', $id);
 	    $data['postagem'] = $this->db->get('postagens')->result();
 	    $data['postagens'] = $this->db->get('postagens')->result();
 	    $this->load->view('detalhes_postagem', $data);
-    }
+
+	}
 
     public function fale_conosco() {
+
 	    $this->load->helper('form');
 	    $this->load->view('fale_conosco');
+
     }
 
     public function enviar_mensagem() {
-	    $mensagem = 'Nome: ' . $this->input->post('txt-nome') . br();
-	    $mensagem .= 'E-mail: ' . $this->input->post('txt-email') . br();
-	    $mensagem .= 'Mensagem: ' . $this->input->post('txt-mensagem') . br();
 
-	    $config['protocol'] = 'smtp';
-	    $config['smtp_host'] = 'ssl://smtp.googlemail.com';
-	    $config['smtp_port'] = '465';
-	    $config['smtp_timeout'] = '30';
-	    $config['smtp_user'] = 'indignaldo dores';
-	    $config['smtp_pass'] = 'CpuFudido2018';
-	    $config['charset'] = 'utf-8';
-	    $config['newlinw'] = '\r\n';
-	    $config['mailtype'] = 'html';
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt_nome', 'NOME', 'required');
+        $this->form_validation->set_rules('txt_email', 'EMAIL', 'required|valid_email');
+        $this->form_validation->set_rules('txt_mensagem', 'MENSAGEM', 'required');
 
-	    $this->load->library('email');
-	    $this->email->from('indignaldodores@gmail.com', 'Formulario de contato');
-	    $this->email->to('wennersanner@htomail.com');
-	    $this->email->subject('Assunto do email, enviado pelo CodeIgniter');
-	    $this->email->message($mensagem);
+        if ($this->form_validation->run()) {
 
-	    if ($this->email->send()) {
-	        $this->load->view('sucesso_envia_contato');
+            $mensagem = 'Nome: ' . $this->input->post('txt-nome') . br();
+            $mensagem .= 'E-mail: ' . $this->input->post('txt-email') . br();
+            $mensagem .= 'Mensagem: ' . $this->input->post('txt-mensagem') . br();
 
-	    }
-	    else {
-	        print_r($this->email->print_debugger());
+            $config['protocol'] = 'smtp';
+            $config['smtp_host'] = 'ssl://smtp.googlemail.com';
+            $config['smtp_port'] = '465';
+            $config['smtp_timeout'] = '30';
+            $config['smtp_user'] = 'indignaldo dores';
+            $config['smtp_pass'] = 'CpuFudido2018';
+            $config['charset'] = 'utf-8';
+            $config['newlinw'] = '\r\n';
+            $config['mailtype'] = 'html';
+
+            $this->load->library('email');
+            $this->email->from('indignaldodores@gmail.com', 'Formulario de contato');
+            $this->email->to('wennersanner@htomail.com');
+            $this->email->subject('Assunto do email, enviado pelo CodeIgniter');
+            $this->email->message($mensagem);
+
+            if ($this->email->send()) {
+                $this->load->view('sucesso_envia_contato');
+
+            } else {
+                print_r($this->email->print_debugger());
+            }
+
+        } else {
+
+            $this->fale_conosco();
         }
+
     }
 }
