@@ -11,8 +11,7 @@
 
     <?php
         print anchor(base_url(), ' Home ')
-        . anchor(base_url('fale-conosco'), ' Fale Conosco ') .
-            anchor(base_url('administracao/postagens'), ' Postagens ');
+        . anchor(base_url('fale-conosco'), ' Fale Conosco ');
     ?>
 
     <h2>Meu blog</h2>
